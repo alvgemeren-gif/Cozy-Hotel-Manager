@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
-import { Client, GatewayIntentBits, Events } from "discord.js";
+import { Client, GatewayIntentBits, Events, Collection, REST, Routes } from "discord.js";
+import * as embedsCommand from "./commands/embeds";
 
 const token = process.env.DISCORD_TOKEN;
 if (!token) {
@@ -27,13 +28,38 @@ const client = new Client({
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
   ],
+}) as any;
+
+client.commands = new Collection();
+
+// Register slash commands
+const commands = [embedsCommand];
+commands.forEach((cmd: any) => {
+  client.commands.set(cmd.data.name, cmd);
 });
 
-client.once(Events.ClientReady, (c) => {
+client.once(Events.ClientReady, (c: any) => {
   console.log(`Logged in as ${c.user.tag}`);
 });
 
-client.on(Events.MessageCreate, async (message) => {
+client.on(Events.InteractionCreate, async (interaction: any) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  const command = client.commands.get(interaction.commandName);
+  if (!command) return;
+
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error("Error executing command:", error);
+    await interaction.reply({
+      content: "Er is een fout opgetreden!",
+      ephemeral: true,
+    });
+  }
+});
+
+client.on(Events.MessageCreate, async (message: any) => {
   if (message.author.bot) return;
 
   if (message.content === "!ping") {
@@ -41,7 +67,7 @@ client.on(Events.MessageCreate, async (message) => {
   }
 });
 
-client.login(token).catch((error) => {
+client.login(token).catch((error: any) => {
   console.error("Failed to login:", error);
   process.exit(1);
 });
