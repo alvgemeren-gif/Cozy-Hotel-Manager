@@ -6,6 +6,8 @@ import * as welkomstCommand from "./commands/welkomstbericht";
 import * as vertrekCommand from "./commands/vertrekbericht";
 import * as keuzerollenCommand from "./commands/keuzerollen";
 import * as reviewCommand from "./commands/review";
+import * as countingCommand from "./commands/counting";
+import * as countCommand from "./commands/count";
 
 const token = process.env.DISCORD_TOKEN;
 if (!token) {
@@ -38,7 +40,7 @@ const client = new Client({
 client.commands = new Collection();
 
 // Register slash commands
-const commands = [embedsCommand, welkomstCommand, vertrekCommand, keuzerollenCommand, reviewCommand];
+const commands = [embedsCommand, welkomstCommand, vertrekCommand, keuzerollenCommand, reviewCommand, countingCommand, countCommand];
 commands.forEach((cmd: any) => {
   client.commands.set(cmd.data.name, cmd);
 });
