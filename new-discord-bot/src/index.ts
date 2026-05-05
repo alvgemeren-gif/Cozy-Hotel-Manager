@@ -8,6 +8,9 @@ import * as keuzerollenCommand from "./commands/keuzerollen";
 import * as reviewCommand from "./commands/review";
 import * as countingCommand from "./commands/counting";
 import * as countCommand from "./commands/count";
+import * as minigamesCommand from "./commands/minigames";
+import * as wordleguessCommand from "./commands/wordleguess";
+import * as hangmanletterCommand from "./commands/hangmanletter";
 
 const token = process.env.DISCORD_TOKEN;
 if (!token) {
@@ -40,7 +43,7 @@ const client = new Client({
 client.commands = new Collection();
 
 // Register slash commands
-const commands = [embedsCommand, welkomstCommand, vertrekCommand, keuzerollenCommand, reviewCommand, countingCommand, countCommand];
+const commands = [embedsCommand, welkomstCommand, vertrekCommand, keuzerollenCommand, reviewCommand, countingCommand, countCommand, minigamesCommand, wordleguessCommand, hangmanletterCommand];
 commands.forEach((cmd: any) => {
   client.commands.set(cmd.data.name, cmd);
 });
@@ -79,6 +82,19 @@ client.on(Events.InteractionCreate, async (interaction: any) => {
           content: "An error occurred while processing your review!",
           ephemeral: true,
         });
+      }
+    }
+  } else if (interaction.isButton()) {
+    // Handle button interactions for minesweeper
+    if (interaction.customId.startsWith("minesweeper_")) {
+      try {
+        const parts = interaction.customId.split("_");
+        const sessionId = `${parts[1]}_${parts[2]}_${parts[3]}`;
+        const x = parseInt(parts[4]);
+        const y = parseInt(parts[5]);
+        await minigamesCommand.handleMinesweeperClick(interaction, x, y, sessionId);
+      } catch (error) {
+        console.error("Error handling minesweeper click:", error);
       }
     }
   }
