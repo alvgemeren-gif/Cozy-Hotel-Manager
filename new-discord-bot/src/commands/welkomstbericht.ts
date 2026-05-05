@@ -4,16 +4,16 @@ import { SlashCommandBuilder, EmbedBuilder, ChannelType } from "discord.js";
 const guildSettings = new Map<string, string>();
 
 export const data = new SlashCommandBuilder()
-  .setName("welkomstbericht")
-  .setDescription("Configureer het welkomstbericht")
+  .setName("welcome_message")
+  .setDescription("Configure the welcome message")
   .addSubcommand((sub) =>
     sub
       .setName("set")
-      .setDescription("Stel het kanaal voor welkomstberichten in")
+      .setDescription("Set the channel for welcome messages")
       .addChannelOption((opt) =>
         opt
-          .setName("kanaal")
-          .setDescription("Het kanaal waar welkomstberichten gestuurd worden")
+          .setName("channel")
+          .setDescription("The channel where welcome messages will be sent")
           .addChannelTypes(ChannelType.GuildText)
           .setRequired(true)
       )
@@ -21,7 +21,7 @@ export const data = new SlashCommandBuilder()
   .addSubcommand((sub) =>
     sub
       .setName("view")
-      .setDescription("Bekijk het ingestelde welkomstkanaal")
+      .setDescription("View the set welcome channel")
   );
 
 export async function execute(interaction: any) {
@@ -33,9 +33,9 @@ export async function execute(interaction: any) {
 
     const embed = new EmbedBuilder()
       .setColor("#d4af37")
-      .setTitle("✅ Welkomstkanaal ingesteld")
-      .setDescription(`Welkomstberichten worden nu gestuurd naar ${channel}`)
-      .setFooter({ text: "Nieuwe leden krijgen een welkomstbericht" });
+      .setTitle("✅ Welcome channel set")
+      .setDescription(`Welcome messages will now be sent to ${channel}`)
+      .setFooter({ text: "New members will receive a welcome message" });
 
     await interaction.reply({ embeds: [embed] });
   } else if (subcommand === "view") {
@@ -44,14 +44,14 @@ export async function execute(interaction: any) {
     if (!channelId) {
       const embed = new EmbedBuilder()
         .setColor("#ff0000")
-        .setTitle("❌ Geen kanaal ingesteld")
-        .setDescription("Gebruik `/welkomstbericht set` om een kanaal in te stellen");
+        .setTitle("❌ No channel set")
+        .setDescription("Use `/welcome_message set` to set a channel");
       await interaction.reply({ embeds: [embed] });
     } else {
       const embed = new EmbedBuilder()
         .setColor("#d4af37")
-        .setTitle("📝 Hudig welkomstkanaal")
-        .setDescription(`Welkomstberichten worden gestuurd naar <#${channelId}>`);
+        .setTitle("📝 Current welcome channel")
+        .setDescription(`Welcome messages will be sent to <#${channelId}>`);
       await interaction.reply({ embeds: [embed] });
     }
   }
@@ -69,14 +69,14 @@ export function registerWelcomeListener(client: any) {
 
     const embed = new EmbedBuilder()
       .setColor("#d4af37")
-      .setTitle("🎉 Welkom!")
-      .setDescription(`Welkom op de server, ${member.user}!`)
+      .setTitle("🎉 Welcome!")
+      .setDescription(`Welcome to the server, ${member.user}!`)
       .setThumbnail(member.user.displayAvatarURL())
       .addFields(
-        { name: "Gebruiker", value: member.user.tag, inline: true },
-        { name: "Leden totaal", value: `${member.guild.memberCount}`, inline: true }
+        { name: "User", value: member.user.tag, inline: true },
+        { name: "Total members", value: `${member.guild.memberCount}`, inline: true }
       )
-      .setFooter({ text: "Veel plezier!" });
+      .setFooter({ text: "Enjoy your stay!" });
 
     await channel.send({ embeds: [embed] });
   });

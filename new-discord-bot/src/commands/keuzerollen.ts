@@ -4,7 +4,7 @@ import { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, But
 const rolePanels = new Map<string, { messageId: string; roles: { id: string; name: string; emoji?: string }[] }>();
 
 export const data = new SlashCommandBuilder()
-  .setName("keuzerollen")
+  .setName("role_selection")
   .setDescription("Create a role selection panel")
   .addSubcommand((sub) =>
     sub
@@ -63,7 +63,7 @@ export async function execute(interaction: any) {
       .addComponents(
         new ButtonBuilder()
           .setCustomId("role_placeholder")
-          .setLabel("Add roles using /keuzerollen add_role")
+          .setLabel("Add roles using /role_selection add_role")
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(true)
       );

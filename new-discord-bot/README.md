@@ -1,38 +1,38 @@
 # New Discord Bot
 
-Een eenvoudige Discord-bot starter.
+A simple Discord bot starter.
 
 ## Setup
 
-1. Installeer dependencies:
+1. Install dependencies:
    ```bash
    pnpm install
    ```
 
-2. Kopieer `.env.example` naar `.env` en vul je token in:
+2. Copy `.env.example` to `.env` and fill in your token:
    ```bash
    cp .env.example .env
    ```
 
-3. Start de bot in development:
+3. Start the bot in development:
    ```bash
    pnpm run dev
    ```
 
 ## Commands
 
-- `!ping` - de bot antwoordt met `Pong!`
+- `!ping` - the bot responds with `Pong!`
 
 ## Render deployment
 
-1. Zorg dat je `DISCORD_TOKEN` als secret in Render toevoegt.
-2. Zorg dat je service `root` naar `new-discord-bot` wijst.
-3. Gebruik deze build command:
+1. Make sure `DISCORD_TOKEN` is added as a secret in Render.
+2. Make sure the service root points to `new-discord-bot`.
+3. Use this build command:
    ```bash
    pnpm install && pnpm run build
    ```
-4. Gebruik deze start command:
+4. Use this start command:
    ```bash
    pnpm run start
    ```
-5. Zet een external health check op naar `/healthz` zodat je app wakker blijft.
+5. Set an external health check to `/healthz` so your app stays awake.

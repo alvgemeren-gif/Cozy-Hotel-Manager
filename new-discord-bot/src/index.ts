@@ -4,7 +4,6 @@ import { Client, GatewayIntentBits, Events, Collection } from "discord.js";
 import * as embedsCommand from "./commands/embeds";
 import * as welkomstCommand from "./commands/welkomstbericht";
 import * as vertrekCommand from "./commands/vertrekbericht";
-import * as reviewCommand from "./commands/review";
 import * as keuzerollenCommand from "./commands/keuzerollen";
 
 const token = process.env.DISCORD_TOKEN;
@@ -38,7 +37,7 @@ const client = new Client({
 client.commands = new Collection();
 
 // Register slash commands
-const commands = [embedsCommand, welkomstCommand, vertrekCommand, reviewCommand, keuzerollenCommand];
+const commands = [embedsCommand, welkomstCommand, vertrekCommand, keuzerollenCommand];
 commands.forEach((cmd: any) => {
   client.commands.set(cmd.data.name, cmd);
 });
@@ -63,7 +62,7 @@ client.on(Events.InteractionCreate, async (interaction: any) => {
   } catch (error) {
     console.error("Error executing command:", error);
     await interaction.reply({
-      content: "Er is een fout opgetreden!",
+      content: "An error occurred!",
       ephemeral: true,
     });
   }

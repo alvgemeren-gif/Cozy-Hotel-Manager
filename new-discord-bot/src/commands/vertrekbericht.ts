@@ -4,16 +4,16 @@ import { SlashCommandBuilder, EmbedBuilder, ChannelType } from "discord.js";
 const guildSettings = new Map<string, string>();
 
 export const data = new SlashCommandBuilder()
-  .setName("vertrekbericht")
-  .setDescription("Configureer het vertrekbericht")
+  .setName("leave_message")
+  .setDescription("Configure the leave message")
   .addSubcommand((sub) =>
     sub
       .setName("set")
-      .setDescription("Stel het kanaal voor vertrekberichten in")
+      .setDescription("Set the channel for leave messages")
       .addChannelOption((opt) =>
         opt
-          .setName("kanaal")
-          .setDescription("Het kanaal waar vertrekberichten gestuurd worden")
+          .setName("channel")
+          .setDescription("The channel where leave messages will be sent")
           .addChannelTypes(ChannelType.GuildText)
           .setRequired(true)
       )
@@ -21,7 +21,7 @@ export const data = new SlashCommandBuilder()
   .addSubcommand((sub) =>
     sub
       .setName("view")
-      .setDescription("Bekijk het ingestelde vertrekkanaal")
+      .setDescription("View the set leave channel")
   );
 
 export async function execute(interaction: any) {
@@ -33,9 +33,9 @@ export async function execute(interaction: any) {
 
     const embed = new EmbedBuilder()
       .setColor("#d4af37")
-      .setTitle("✅ Vertrekkanaal ingesteld")
-      .setDescription(`Vertrekberichten worden nu gestuurd naar ${channel}`)
-      .setFooter({ text: "Leden die de server verlaten krijgen een vertrekbericht" });
+      .setTitle("✅ Leave channel set")
+      .setDescription(`Leave messages will now be sent to ${channel}`)
+      .setFooter({ text: "Members who leave will receive a leave message" });
 
     await interaction.reply({ embeds: [embed] });
   } else if (subcommand === "view") {
@@ -44,14 +44,14 @@ export async function execute(interaction: any) {
     if (!channelId) {
       const embed = new EmbedBuilder()
         .setColor("#ff0000")
-        .setTitle("❌ Geen kanaal ingesteld")
-        .setDescription("Gebruik `/vertrekbericht set` om een kanaal in te stellen");
+        .setTitle("❌ No channel set")
+        .setDescription("Use `/leave_message set` to set a channel");
       await interaction.reply({ embeds: [embed] });
     } else {
       const embed = new EmbedBuilder()
         .setColor("#d4af37")
-        .setTitle("📝 Hudig vertrekkanaal")
-        .setDescription(`Vertrekberichten worden gestuurd naar <#${channelId}>`);
+        .setTitle("📝 Current leave channel")
+        .setDescription(`Leave messages will be sent to <#${channelId}>`);
       await interaction.reply({ embeds: [embed] });
     }
   }
@@ -69,14 +69,14 @@ export function registerLeaveListener(client: any) {
 
     const embed = new EmbedBuilder()
       .setColor("#ff6b6b")
-      .setTitle("👋 Tot ziens!")
-      .setDescription(`${member.user} heeft de server verlaten.`)
+      .setTitle("👋 Goodbye!")
+      .setDescription(`${member.user} has left the server.`)
       .setThumbnail(member.user.displayAvatarURL())
       .addFields(
-        { name: "Gebruiker", value: member.user.tag, inline: true },
-        { name: "Leden totaal", value: `${member.guild.memberCount}`, inline: true }
+        { name: "User", value: member.user.tag, inline: true },
+        { name: "Total members", value: `${member.guild.memberCount}`, inline: true }
       )
-      .setFooter({ text: "We zullen je missen!" });
+      .setFooter({ text: "We'll miss you!" });
 
     await channel.send({ embeds: [embed] });
   });
