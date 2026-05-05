@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-bot",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "cwd": "${workspaceFolder}/new-discord-bot",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "start-bot",
+      "type": "shell",
+      "command": "npm",
+      "args": ["start"],
+      "cwd": "${workspaceFolder}/new-discord-bot",
+      "problemMatcher": []
+    },
+    {
+      "label": "dev-bot",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "cwd": "${workspaceFolder}/new-discord-bot",
+      "problemMatcher": [],
+      "isBackground": true
+    }
+  ]
+}

@@ -5,13 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/app.js",
+            "name": "Discord Bot - Dev",
+            "program": "${workspaceFolder}/new-discord-bot/dist/index.mjs",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "type": "node"
+            "type": "node",
+            "preLaunchTask": "build-bot",
+            "cwd": "${workspaceFolder}/new-discord-bot"
         },
         {
             "name": "Attach",
