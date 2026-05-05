@@ -5,6 +5,7 @@ import * as embedsCommand from "./commands/embeds";
 import * as welkomstCommand from "./commands/welkomstbericht";
 import * as vertrekCommand from "./commands/vertrekbericht";
 import * as reviewCommand from "./commands/review";
+import * as keuzerollenCommand from "./commands/keuzerollen";
 
 const token = process.env.DISCORD_TOKEN;
 if (!token) {
@@ -37,7 +38,7 @@ const client = new Client({
 client.commands = new Collection();
 
 // Register slash commands
-const commands = [embedsCommand, welkomstCommand, vertrekCommand, reviewCommand];
+const commands = [embedsCommand, welkomstCommand, vertrekCommand, reviewCommand, keuzerollenCommand];
 commands.forEach((cmd: any) => {
   client.commands.set(cmd.data.name, cmd);
 });
@@ -45,6 +46,7 @@ commands.forEach((cmd: any) => {
 // Register event listeners
 welkomstCommand.registerWelcomeListener(client);
 vertrekCommand.registerLeaveListener(client);
+keuzerollenCommand.registerRoleButtonHandler(client);
 
 client.once(Events.ClientReady, (c: any) => {
   console.log(`Logged in as ${c.user.tag}`);

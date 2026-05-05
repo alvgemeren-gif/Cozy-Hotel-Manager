@@ -21,3 +21,12 @@
     "typescript": "^5.6.0"
   }
 }
+
+{
+  "name": "my-package",
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "jest"
+  }
+}
+
