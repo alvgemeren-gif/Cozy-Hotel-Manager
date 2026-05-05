@@ -13,7 +13,7 @@ if (Number.isNaN(port) || port <= 0) {
 }
 
 const app = express();
-app.get("/healthz", (_req, res) => {
+app.get("/healthz", (_req: express.Request, res: express.Response) => {
   res.json({ status: "ok" });
 });
 
