@@ -3,6 +3,8 @@ import express from "express";
 import { Client, GatewayIntentBits, Events, Collection } from "discord.js";
 import * as embedsCommand from "./commands/embeds";
 import * as welkomstCommand from "./commands/welkomstbericht";
+import * as vertrekCommand from "./commands/vertrekbericht";
+import * as reviewCommand from "./commands/review";
 
 const token = process.env.DISCORD_TOKEN;
 if (!token) {
@@ -35,13 +37,14 @@ const client = new Client({
 client.commands = new Collection();
 
 // Register slash commands
-const commands = [embedsCommand, welkomstCommand];
+const commands = [embedsCommand, welkomstCommand, vertrekCommand, reviewCommand];
 commands.forEach((cmd: any) => {
   client.commands.set(cmd.data.name, cmd);
 });
 
-// Register welcome listener
+// Register event listeners
 welkomstCommand.registerWelcomeListener(client);
+vertrekCommand.registerLeaveListener(client);
 
 client.once(Events.ClientReady, (c: any) => {
   console.log(`Logged in as ${c.user.tag}`);
