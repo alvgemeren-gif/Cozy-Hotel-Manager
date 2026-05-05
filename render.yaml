@@ -1,0 +1,13 @@
+services:
+  - name: new-discord-bot
+    type: web
+    env: node
+    plan: free
+    branch: main
+    root: new-discord-bot
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /healthz
