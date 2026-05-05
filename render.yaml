@@ -4,9 +4,8 @@ services:
     env: node
     plan: free
     branch: main
-    rootDir: new-discord-bot
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: cd new-discord-bot && npm install && npm run build
+    startCommand: cd new-discord-bot && npm start
     envVars:
       - key: NODE_ENV
         value: production
