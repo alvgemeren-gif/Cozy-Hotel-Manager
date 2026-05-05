@@ -5,6 +5,7 @@ import * as embedsCommand from "./commands/embeds";
 import * as welkomstCommand from "./commands/welkomstbericht";
 import * as vertrekCommand from "./commands/vertrekbericht";
 import * as keuzerollenCommand from "./commands/keuzerollen";
+import * as reviewCommand from "./commands/review";
 
 const token = process.env.DISCORD_TOKEN;
 if (!token) {
@@ -37,7 +38,7 @@ const client = new Client({
 client.commands = new Collection();
 
 // Register slash commands
-const commands = [embedsCommand, welkomstCommand, vertrekCommand, keuzerollenCommand];
+const commands = [embedsCommand, welkomstCommand, vertrekCommand, keuzerollenCommand, reviewCommand];
 commands.forEach((cmd: any) => {
   client.commands.set(cmd.data.name, cmd);
 });
@@ -52,19 +53,32 @@ client.once(Events.ClientReady, (c: any) => {
 });
 
 client.on(Events.InteractionCreate, async (interaction: any) => {
-  if (!interaction.isChatInputCommand()) return;
+  if (interaction.isChatInputCommand()) {
+    const command = client.commands.get(interaction.commandName);
+    if (!command) return;
 
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error("Error executing command:", error);
-    await interaction.reply({
-      content: "An error occurred!",
-      ephemeral: true,
-    });
+    try {
+      await command.execute(interaction);
+    } catch (error) {
+      console.error("Error executing command:", error);
+      await interaction.reply({
+        content: "An error occurred!",
+        ephemeral: true,
+      });
+    }
+  } else if (interaction.isModalSubmit()) {
+    // Handle modal submissions
+    if (interaction.customId.startsWith("review_")) {
+      try {
+        await reviewCommand.handleModal(interaction);
+      } catch (error) {
+        console.error("Error handling modal:", error);
+        await interaction.reply({
+          content: "An error occurred while processing your review!",
+          ephemeral: true,
+        });
+      }
+    }
   }
 });
 
