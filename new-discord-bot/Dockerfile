@@ -2,24 +2,27 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install pnpm
-RUN npm install -g pnpm
-
 # Copy package files
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN pnpm install --prod
+RUN npm ci --only=prod
 
 # Copy source
 COPY src ./src
 COPY tsconfig.json ./
 
+# Install build dependencies
+RUN npm ci
+
 # Build
-RUN pnpm run build
+RUN npm run build
+
+# Remove build dependencies
+RUN npm ci --only=prod
 
 # Expose port
 EXPOSE 3000
 
 # Start
-CMD ["pnpm", "run", "start"]
+CMD ["node", "dist/index.mjs"]
