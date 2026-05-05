@@ -1,13 +1,14 @@
 services:
   - name: new-discord-bot
     type: web
-    env: node
+    env: docker
     plan: free
     branch: main
     root: new-discord-bot
-    buildCommand: pnpm install && pnpm run build
-    startCommand: pnpm run start
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: NODE_ENV
         value: production
+      - key: DISCORD_TOKEN
+        sync: false
     healthCheckPath: /healthz
